@@ -1,0 +1,19 @@
+---
+// src/pages/index.astro
+import HomeSection from '../components/HomeSection.astro';
+import Navbar from '../components/Navbar.astro'
+import Layout from '../layouts/Layout.astro';
+import AboutMe from '../components/AboutMe.astro'
+import Experience from '../components/Experience.astro';
+---
+
+<Layout>
+    <Navbar />
+
+    <div id="hero-section">
+        <HomeSection />
+    </div>
+	<AboutMe/>
+	<Experience />
+
+</Layout>

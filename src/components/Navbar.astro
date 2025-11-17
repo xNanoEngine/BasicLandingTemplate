@@ -1,0 +1,78 @@
+---
+
+const { title = "Matias M." } = Astro.props;
+
+const navItems = [
+  { name: "Sobre mí", href: "#sobre-mi" },
+  { name: "Experiencia", href: "#experiencia" },
+  { name: "Servicios", href: "#servicios" },
+  { name: "Contacto", href: "#contacto" },
+];
+---
+
+<header 
+  id="main-navbar"
+  class="fixed w-full top-0 left-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 transition-transform duration-300 md:-translate-y-full"
+>
+  <div class="max-w-5xl mx-auto flex justify-between items-center px-6 py-4">
+    <a href="#inicio" class="font-bold text-lg text-slate-800 hover:text-blue-600 transition-colors">{title}</a>
+    <ul class="hidden md:flex gap-6">
+       {navItems.map(item => (
+         <li>
+           <a href={item.href} class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
+             {item.name}
+           </a>
+         </li>
+       ))}
+    </ul>
+    <button id="menu-btn" class="md:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-md transition-colors">
+      <svg id="icon-menu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+      <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 hidden">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+  <nav id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white border-b border-slate-200 shadow-lg">
+    <ul class="flex flex-col p-4 space-y-2">
+      {navItems.map((item) => (
+        <li><a href={item.href} class="block px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg">{item.name}</a></li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<script>
+
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconMenu = document.getElementById('icon-menu');
+  const iconClose = document.getElementById('icon-close');
+
+  menuBtn?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+    iconMenu?.classList.toggle('hidden');
+    iconClose?.classList.toggle('hidden');
+  });
+
+  const navbar = document.getElementById('main-navbar');
+  const heroSection = document.getElementById('hero-section');
+
+  if (heroSection && navbar) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) {
+          navbar.classList.remove('md:-translate-y-full');
+          navbar.classList.add('shadow-sm');
+        } else {
+          navbar.classList.add('md:-translate-y-full');
+          navbar.classList.remove('shadow-sm');
+        }
+      });
+    }, { 
+      rootMargin: "-100px 0px 0px 0px" 
+    });
+    observer.observe(heroSection);
+  }
+</script>
