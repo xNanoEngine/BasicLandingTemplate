@@ -1,0 +1,313 @@
+---
+// DATOS DE EJEMPLO
+const projects = [
+  {
+    id: 1,
+    title: "RepoAnimal",
+    shortDesc: "Sistema de reportes de animales asilvestrados y/o callejeros",
+    fullDesc:
+      "Prototipo de Aplicación móvil pwa para reportar animales de forma geolocalizada, además soporta entornos sin conexión e instalación en vista principal del movil.",
+    image:
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
+    tech: ["React", "Node.js", "PostgreSQL", "MinIO", "Leaflet"],
+  },
+  {
+    id: 2,
+    title: "Infopets",
+    shortDesc: "Aplicación nativa para gestionar información de mascotas.",
+    fullDesc:
+      "Aplicación móvil nativa enfocada en brindar un carnet digital para el registro de mascotas.",
+    image:
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2626&auto=format&fit=crop",
+    tech: ["React Native", "Expo", "Node.js"],
+  },
+  {
+    id: 3,
+    title: "Conversa con los Andes",
+    shortDesc:
+      "Plataforma destinada a brindar información territorial en la region de los rios.",
+    fullDesc:
+      "Sistema RAG enfocado principalmente en responder preguntas territoriales en la region de Los Rios. El sistema cuenta con paneles de administración y graficas de uso del sistema.",
+    image:
+      "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2670&auto=format&fit=crop",
+    tech: ["Next", "Node.js", "Python", "ChromaDB", "PostgreSQL"],
+  },
+];
+---
+
+<section
+  id="proyectos"
+  class="w-full px-4 py-16 bg-white flex flex-col justify-center items-center min-h-screen"
+>
+  <div class="text-center mb-10 max-w-3xl mx-auto">
+    <h2 class="text-4xl font-bold text-slate-800 mb-2">Proyectos</h2>
+    <p class="text-slate-500 text-lg">Proyectos en donde he participado.</p>
+  </div>
+
+  <div class="relative w-full max-w-7xl px-4 md:px-12 group">
+    <button
+      id="prevBtn"
+      class="absolute -left-2 md:-left-12 top-1/2 -translate-y-1/2 z-20 bg-white p-3 rounded-full shadow-lg text-slate-600 hover:text-blue-600 hover:scale-110 transition-all hidden md:flex items-center justify-center border border-slate-100"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2.5"
+        stroke="currentColor"
+        class="w-6 h-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M15.75 19.5L8.25 12l7.5-7.5"></path>
+      </svg>
+    </button>
+
+    <div
+      id="carousel"
+      class="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth py-12 px-2 no-scrollbar"
+    >
+      {
+        projects.map((project) => (
+          <div
+            class="snap-center shrink-0 w-full md:w-[calc(33.333%-1rem)] cursor-pointer transition-transform hover:-translate-y-2 duration-300 project-card"
+            data-project={JSON.stringify(project)}
+          >
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-100 h-full flex flex-col transition-shadow duration-300">
+              <div class="h-48 overflow-hidden relative">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                />
+                <div class="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100">
+                  <span class="bg-white/90 text-slate-800 px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                    Ver más
+                  </span>
+                </div>
+              </div>
+              <div class="p-6 flex flex-col grow">
+                <h3 class="text-xl font-bold text-slate-800 mb-2">
+                  {project.title}
+                </h3>
+                <p class="text-slate-500 text-sm line-clamp-3 mb-4 grow">
+                  {project.shortDesc}
+                </p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {project.tech.map((t) => (
+                    <span class="px-2 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded-md border border-blue-100">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <button
+      id="nextBtn"
+      class="absolute -right-2 md:-right-12 top-1/2 -translate-y-1/2 z-20 bg-white p-3 rounded-full shadow-lg text-slate-600 hover:text-blue-600 hover:scale-110 transition-all hidden md:flex items-center justify-center border border-slate-100"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2.5"
+        stroke="currentColor"
+        class="w-6 h-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M8.25 4.5l7.5 7.5-7.5 7.5"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class="flex justify-center gap-2 mt-4 md:hidden">
+    <span class="text-slate-400 text-sm animate-pulse"
+      >Desliza para ver más ↔</span
+    >
+  </div>
+</section>
+
+<div
+  id="projectModal"
+  class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300"
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div
+    class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+    id="modalBackdrop"
+  >
+  </div>
+  <div
+    class="flex min-h-full items-center justify-center p-4 text-center sm:p-0"
+  >
+    <div
+      class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg md:max-w-2xl scale-95"
+      id="modalPanel"
+    >
+      <button
+        id="closeModalBtn"
+        class="absolute top-4 right-4 z-10 p-2 bg-white/80 rounded-full hover:bg-slate-100 text-slate-500 hover:text-red-500 transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-5 h-5"
+          ><path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"></path></svg
+        >
+      </button>
+      <div class="bg-white">
+        <img id="modalImage" src="" alt="" class="w-full h-64 object-cover" />
+        <div class="p-6 sm:p-8">
+          <h3 class="text-2xl font-bold text-slate-900 mb-2" id="modalTitle">
+            Titulo
+          </h3>
+          <div id="modalTech" class="flex flex-wrap gap-2 mb-6"></div>
+          <div class="prose prose-slate max-w-none">
+            <p id="modalDesc" class="text-slate-600 leading-relaxed text-lg">
+              Descripción...
+            </p>
+          </div>
+          <div class="mt-8 flex justify-end gap-3">
+            <button
+              id="closeModalBtn2"
+              class="px-5 py-2.5 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20"
+              >Cerrar</button
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
+
+<script>
+  // --- 1. Lógica del Carrusel ---
+  const carousel = document.getElementById("carousel");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  const scrollAmount = () => {
+    if (!carousel) return 0;
+    return window.innerWidth < 768
+      ? window.innerWidth
+      : carousel.clientWidth / 3;
+  };
+  nextBtn?.addEventListener("click", () => {
+    carousel?.scrollBy({ left: scrollAmount(), behavior: "smooth" });
+  });
+
+  prevBtn?.addEventListener("click", () => {
+    carousel?.scrollBy({ left: -scrollAmount(), behavior: "smooth" });
+  });
+
+  // --- 2. Lógica del Modal ---
+  const modal = document.getElementById("projectModal");
+  const modalPanel = document.getElementById("modalPanel");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalDesc = document.getElementById("modalDesc");
+  const modalImage = document.getElementById(
+    "modalImage",
+  ) as HTMLImageElement | null;
+  const modalTech = document.getElementById("modalTech");
+
+  const cards = document.querySelectorAll(".project-card");
+
+  const closeModalBtns = [
+    document.getElementById("closeModalBtn"),
+    document.getElementById("closeModalBtn2"),
+    document.getElementById("modalBackdrop"),
+  ];
+
+  // Función para abrir modal
+  const openModal = (data: {
+    title: string | null;
+    fullDesc: string | null;
+    image: string;
+    tech: any[];
+  }) => {
+    if (
+      !modal ||
+      !modalPanel ||
+      !modalTitle ||
+      !modalDesc ||
+      !modalImage ||
+      !modalTech
+    ) {
+      console.error("Faltan elementos del DOM para el modal");
+      return;
+    }
+
+    modalTitle.textContent = data.title;
+    modalDesc.textContent = data.fullDesc;
+    modalImage.src = data.image;
+    modalTech.innerHTML = "";
+    data.tech.forEach((tag: string | null) => {
+      const span = document.createElement("span");
+      span.className =
+        "px-3 py-1 bg-blue-50 text-blue-700 text-sm font-medium rounded-full";
+      span.textContent = tag;
+      modalTech.appendChild(span);
+    });
+    modal.classList.remove("hidden");
+    setTimeout(() => {
+      modal.classList.remove("opacity-0");
+      modalPanel.classList.remove("scale-95");
+      modalPanel.classList.add("scale-100");
+    }, 10);
+  };
+
+  const closeModal = () => {
+    if (!modal || !modalPanel) return;
+
+    modal.classList.add("opacity-0");
+    modalPanel.classList.remove("scale-100");
+    modalPanel.classList.add("scale-95");
+
+    setTimeout(() => {
+      modal.classList.add("hidden");
+    }, 300);
+  };
+
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const dataString = card.getAttribute("data-project");
+      if (dataString) {
+        const data = JSON.parse(dataString);
+        openModal(data);
+      }
+    });
+  });
+
+  closeModalBtns.forEach((btn) => btn?.addEventListener("click", closeModal));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal && !modal.classList.contains("hidden")) {
+      closeModal();
+    }
+  });
+</script>
